@@ -20,8 +20,8 @@ def list_apk():
 
 # function generate array with list pull app library from android
 def list_app(path):
-	print ("1")
-	commd = "ls tmp_for_script/down_apk/ > " + path +"/tmp_for_script/package-tmp-ren.txt"
+#	print ("1")
+	commd = f'ls tmp_for_script/down_apk/ > "{path}/tmp_for_script/package-tmp-ren.txt"'
 	os.system (commd)
 	fs = open('tmp_for_script/package-tmp-ren.txt')
 	ren_arr=[]
@@ -30,13 +30,14 @@ def list_app(path):
 	fs.close()
 	return ren_arr
 
+
 def ren_app(ren_arr, data, path_for_app):
 	for name_app in ren_arr:
 		source_name = 'tmp_for_script/down_apk/'+ name_app
 		destanation_name = 'tmp_for_script/down_apk/'+ data + '_'+ name_app
 		print(source_name, destanation_name	)
 		os.rename(source_name, destanation_name)
-	summary_path = 	"mv tmp_for_script/down_apk/*.apk " + path_for_app
+	summary_path = 	f'mv tmp_for_script/down_apk/*.apk "{path_for_app}"'
 	os.system(summary_path)
 	return "Great works!"
 
@@ -47,8 +48,8 @@ def pull_apk():
 	user_arr=[]
 	for line in f:
 		user_arr.append(line.replace("package:", "").strip())
-	f.close()	
-# start cycle 
+	f.close()
+# start cycle
 	for data in user_arr:
 # create directory with nape one user App
 		path_for_app = "apk/" + data
@@ -58,7 +59,7 @@ def pull_apk():
 			print ("Создать директорию %s не удалось, возможно уже создана" % path_for_app)
 		else:
 			print ("Успешно создана директория %s/apk" % path_for_app)
-#Create file with list of name path pull App				
+#Create file with list of name path pull App
 		commd = "adb shell pm path " + data + " > tmp_for_script/path_apk.txt"
 		os.system (commd)
 #Create path_arr with list of path App to pull
@@ -67,9 +68,9 @@ def pull_apk():
 		for path_line in t:
 			path_arr.append(path_line.replace("package:", "").strip())
 		t.close()
-#Downloads App librarry	in tmp	
+#Downloads App librarry	in tmp
 		for path_down in path_arr:
-			commd_down = "adb pull " + path_down + " " + path + "/tmp_for_script/down_apk/"
+			commd_down = f'adb pull {path_down} "{path}/tmp_for_script/down_apk/"'
 			os.system (commd_down)
 #Create ren_arr with list app library for rename
 		print("2")
@@ -84,12 +85,11 @@ try:
 	create_dir(path)
 	list_apk()
 	pull_apk()
-	
-	
+
 except OSError:
 	print ("Runtime error")
 else:
 	print ("Success")
-	
+
 
 print ("All line are processed")

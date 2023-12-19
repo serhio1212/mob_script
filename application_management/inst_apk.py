@@ -7,9 +7,9 @@ def create_dir(path):
 	try:
 		os.makedirs('apk')
 	except OSError:
-		print ("Создать директорию не удалось %s " % path)
+		print ("Создать директорию не удалось %s " %path)
 	else:
-		print ("Успешно создана директория %s " % path)
+		print ("Успешно создана директория %s " %path)
 		return path , OSError
 
 
@@ -21,7 +21,7 @@ def ren_dir(path):
 	return "Rename completed"
 
 def exp_pack_txt(path):
-	commd = "find apk/*/ -type f | sort -f > " + path +"/package-inst.txt"
+	commd = f'find apk/*/ -type f | sort -f > "{path }/package-inst.txt"'
 	os.system (commd)
 	return "txt files creat"
 
@@ -64,8 +64,7 @@ for dir_name in unic_dir_arr:
 	rezult_path.append(str_path)
 
 for line_rez in rezult_path:
-    commd = "adb install-multiple "	+  line_rez
+    commd = f'adb install-multiple {line_rez}'
     os.system (commd)
     print (commd)
 print ("All line are processed")
-
